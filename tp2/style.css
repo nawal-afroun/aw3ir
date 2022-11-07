@@ -13,13 +13,14 @@ input{
     font-size: 1rem;
     box-sizing: border-box;
 }
-btn-primary {
-    border-radius: 5px;
-  padding: 20px 50px;
+.btn-primary {
+  border-radius: 5px;
+  padding: 6px 12px;
   background-color: #225eb8;
   border-color: #0dfd35;
   color: rgb(16, 69, 78);
   cursor: pointer;
   text-decoration: none;
 }
+
 
