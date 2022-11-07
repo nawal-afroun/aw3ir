@@ -1,0 +1,12 @@
+label{
+    width: 150px;
+    display: inline-block;
+}
+input{
+    width: 250px;
+    padding: 6px 12px;
+    border-radius: 5px;
+    border: 1px solid gray;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
