@@ -29,5 +29,8 @@ form:invalid input[type="submit"] {
 input:invalid + .icon-ok {
     display: none;
   }
+  input:valid + .icon-ok {
+    display: inline-block;
+  }
 
 
