@@ -28,9 +28,28 @@
 <div id="weatherApp">
 
     <body>
-        <h1>TP5</h1>
+        <h1>Application Metéo</h1>
         <p>Hello world! This is HTML5 Boilerplate.</p>
-        <img src="../galilee.png" alt="Logo Galilee" />
+        <!-- formulaire de saisie de ville -->
+        <form v-on:submit="addCity">
+            <div class="input-group">
+                <input type="search" class="form-control" v-model="formCityName" placeholder="Search for..."
+                    aria-label="Search for..." autofocus required>
+                <span class="input-group-btn">
+                    <button class="btn btn-primary" type="submit">Go!</button>
+                </span>
+            </div>
+
+            <!-- affichage de nombre de caractères saisie -->
+            <small class="text-muted">
+                {{formCityName.length}} car.
+            </small>
+
+            <div class="alert alert-danger" role="alert" v-if='messageForm != ""'>
+                {{messageForm}}
+            </div>
+        </form>
+        <!-- fin: formulaire de saisie de ville -->
 </div>
 </body>
 
