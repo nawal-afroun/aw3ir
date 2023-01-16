@@ -48,6 +48,22 @@
             <div class="alert alert-danger" role="alert" v-if='messageForm != ""'>
                 {{messageForm}}
             </div>
+            <!-- Listing des villes, boucle sur l'array : cityList -->
+            <h4>Liste des villes ({{cityList.length}})</h4>
+            <ul class="list-group">
+                <a v-for="city in cityList" v-on:click="meteo(city)"
+                    class="list-group-item d-flex justify-content-between align-items-center">
+                    {{city.name}}
+                    <button v-on:click="remove(city)" class="btn btn-secondary btn-sm"
+                        title="Supprimer de la liste">&times;</button>
+                </a>
+            </ul>
+
+            <div class="alert alert-primary" role="alert" v-if="cityList.length==0">
+                Aucune ville de saisie!
+            </div>
+
+            <!-- fin : Listing des villes -->
         </form>
         <!-- fin: formulaire de saisie de ville -->
 </div>
