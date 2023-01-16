@@ -52,6 +52,15 @@ window.onload = function () {
             meteo: function (_city) {
                 // A compléter dans la suite du TP              
             }
+            this.cityList.push({ name: this.formCityName });
+
+            // remise à zero du message affiché sous le formulaire
+            this.messageForm = '';
+
+            // remise à zero du champ de saisie
+            this.formCityName = '';
+            //}
         }
     });
 }
+
