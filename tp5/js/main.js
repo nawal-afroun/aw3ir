@@ -46,57 +46,58 @@ window.onload = function () {
                 console.log('formCityName:', this.formCityName);
                 // A compléter dans la suite du TP  
             },
+            isCityExist: function (_cityName) {
 
-            remove: function (_city) {
-                // A compléter dans la suite du TP 
-                this.cityList = this.cityList.filter(item => item.name != _city.name);
-            },
-            meteo: function (_city) {
-                // A compléter dans la suite du TP 
-                this.cityWeatherLoading = true;
+                // la méthode 'filter' retourne une liste contenant tous les items ayant un nom égale à _cityName
+                // doc. sur filter : https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Array/filter
+                if (this.cityList.filter(item =>
+                    item.name.toUpperCase() == _cityName.toUpperCase()
+                ).length > 0) {
+                    return true;
+                } else {
+                    return false;
+                }
 
-                // appel AJAX avec fetch
-                fetch('https://api.openweathermap.org/data/2.5/weather?q=' + _city.name + '&units=metric&lang=fr&apikey=VOTRE_APIKEY')
-                    .then(function (response) {
-                        return response.json();
-                    })
-                    .then(function (json) {
-                        app.cityWeatherLoading = false;
+                remove: function (_city) {
+                    // A compléter dans la suite du TP 
+                    this.cityList = this.cityList.filter(item => item.name != _city.name);
+                },
+                meteo: function (_city) {
+                    // A compléter dans la suite du TP 
+                    this.cityWeatherLoading = true;
 
-                        // test du code retour
-                        // 200 = OK
-                        // 404 = city not found 
-                        if (json.cod === 200) {
-                            // on met la réponse du webservice dans la variable cityWeather
-                            app.cityWeather = json;
-                            app.message = null;
-                        } else {
-                            app.cityWeather = null;
-                            app.message = 'Météo introuvable pour ' + _city.name
-                                + ' (' + json.message + ')';
-                        }
-                    });
+                    // appel AJAX avec fetch
+                    fetch('https://api.openweathermap.org/data/2.5/weather?q=' + _city.name + '&units=metric&lang=fr&apikey=VOTRE_APIKEY')
+                        .then(function (response) {
+                            return response.json();
+                        })
+                        .then(function (json) {
+                            app.cityWeatherLoading = false;
+
+                            // test du code retour
+                            // 200 = OK
+                            // 404 = city not found 
+                            if (json.cod === 200) {
+                                // on met la réponse du webservice dans la variable cityWeather
+                                app.cityWeather = json;
+                                app.message = null;
+                            } else {
+                                app.cityWeather = null;
+                                app.message = 'Météo introuvable pour ' + _city.name
+                                    + ' (' + json.message + ')';
+                            }
+                        });
+                }
             }
-        }
             this.cityList.push({ name: this.formCityName });
 
-        // remise à zero du message affiché sous le formulaire
-        this.messageForm = 'existe déjà';
+            // remise à zero du message affiché sous le formulaire
+            this.messageForm = 'existe déjà';
 
-        // remise à zero du champ de saisie
-        this.formCityName = '';
-        //}
-        isCityExist: function (_cityName) {
+            // remise à zero du champ de saisie
+            this.formCityName = '';
+            //}
 
-            // la méthode 'filter' retourne une liste contenant tous les items ayant un nom égale à _cityName
-            // doc. sur filter : https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Array/filter
-            if (this.cityList.filter(item =>
-                item.name.toUpperCase() == _cityName.toUpperCase()
-            ).length > 0) {
-                return true;
-            } else {
-                return false;
-            }
         }
     }
     });
