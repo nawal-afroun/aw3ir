@@ -64,6 +64,46 @@
             </div>
 
             <!-- fin : Listing des villes -->
+            <div v-if="cityWeatherLoading"> Chargement de la météo...</div>
+
+            <div v-if="cityWeather">
+
+                <div class="card" style="width: 18rem;" v-if="cityWeather">
+                    <div class="card-header">
+                        {{cityWeather.name}}
+                    </div>
+                    <img class="card-img-top" v-bind:src="'url google map'" alt="Card image cap">
+
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <i v-bind:class="'wi wi-owm-day-'+cityWeather.weather[0].id"></i>
+                            {{cityWeather.main.temp}}<i class="wi wi-celsius"></i>
+                        </h5>
+                        <p class="card-text">{{cityWeather.weather[0].description}}</p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <i class="wi wi-cloud"></i> Nuage: {{cityWeather.clouds.all}}%
+                        </li>
+                        <li class="list-group-item">
+                            <i class="wi wi-humidity"></i> Humidité: {{cityWeather.main.humidity}}%
+                        </li>
+                        <li class="list-group-item">
+                            <i class="wi wi-windy"></i> Vent: {{cityWeather.wind.speed}} km/h
+                        </li>
+                        <li class="list-group-item">
+                            <i class="wi wi-sunrise"></i>
+                            Levé du soleil:
+                            {{new Date(cityWeather.sys.sunrise * 1000).toTimeString()}}
+                        </li>
+                        <li class="list-group-item">
+                            <i class="wi wi-sunset"></i>
+                            Couché du soleil:
+                            {{new Date(cityWeather.sys.sunset * 1000).toTimeString()}}
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </form>
         <!-- fin: formulaire de saisie de ville -->
 </div>
