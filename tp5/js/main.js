@@ -1,12 +1,13 @@
 var app;
 window.onload = function () {
+
     app = new Vue({
-        el: '#weatherApp', // cible l'élement HTML où nous pourrons utiliser toutes les variables ci-dessous
+        el: '#weatherApp', // cible l'�lement HTML o� nous pourrons utiliser toutes les variables ci-dessous
         data: {
-            // sera utilisé comme indicateur de chargement de l'application
+            // sera utilis� comme indicateur de chargement de l'application
             loaded: false,
 
-            // cityName, variable utilisé dans le formulaire via v-model
+            // cityName, variable utilis� dans le formulaire via v-model
             formCityName: '',
 
             message: 'WebApp Loaded.',
@@ -17,14 +18,14 @@ window.onload = function () {
                 name: 'Paris'
             }],
 
-            // cityWeather contiendra les données météo reçus par openWeatherMap
+            // cityWeather contiendra les donn�es m�t�o re�us par openWeatherMap
             cityWeather: null,
 
             // indicateur de chargement
             cityWeatherLoading: false
         },
 
-        // 'mounted' est exécuté une fois l'application VUE totalement disponible
+        // 'mounted' est ex�cut� une fois l'application VUE totalement disponible
         // Plus d'info. sur le cycle de vie d'une app VUE : 
         // https://vuejs.org/v2/guide/instance.html#Lifecycle-Diagram
         mounted: function () {
@@ -32,23 +33,34 @@ window.onload = function () {
             this.readData();
         },
 
-        // ici, on définit les methodes qui vont traiter les données décrites dans DATA
+        // ici, on d�finit les methodes qui vont traiter les donn�es d�crites dans DATA
         methods: {
             readData: function (event) {
                 console.log('JSON.stringify(this.cityList)', JSON.stringify(this.cityList)); // va afficher la liste des villes
-                // JSON.stringify permet transfomer une liste en chaine de caractère
+                // JSON.stringify permet transfomer une liste en chaine de caract�re
 
                 console.log('this.loaded:', this.loaded); // va afficher 'this.loaded: true'
             },
             addCity: function (event) {
-                event.preventDefault(); // pour ne pas recharger la page à la soumission du formulaire
+                event.preventDefault(); // pour ne pas recharger la page � la soumission du formulaire
 
                 console.log('formCityName:', this.formCityName);
-                // A compléter dans la suite du TP  
+                // A compl�ter dans la suite du TP  
+                this.cityList.push({ name: this.formCityName });
+
+                // remise � zero du message affich� sous le formulaire
+                this.messageForm = '';
+
+                // remise � zero du champ de saisie
+                this.formCityName = '';
+                //Si la ville existe d�j� dans la liste cityList, afficher un message via la variable this.messageForm = 'existe d�j�';
+                this.messageForm = 'existe d�j�';
+
+                //}
             },
             isCityExist: function (_cityName) {
 
-                // la méthode 'filter' retourne une liste contenant tous les items ayant un nom égale à _cityName
+                // la m�thode 'filter' retourne une liste contenant tous les items ayant un nom �gale � _cityName
                 // doc. sur filter : https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Array/filter
                 if (this.cityList.filter(item =>
                     item.name.toUpperCase() == _cityName.toUpperCase()
@@ -57,49 +69,38 @@ window.onload = function () {
                 } else {
                     return false;
                 }
+            },
+            remove: function (_city) {
+                // on utilise 'filter' pour retourne une liste avec tous les items ayant un nom diff�rent de _city.name
+                this.cityList = this.cityList.filter(item => item.name != _city.name);
+            },
+            meteo: function (_city) {
+                this.cityWeatherLoading = true;
 
-                remove: function (_city) {
-                    // A compléter dans la suite du TP 
-                    this.cityList = this.cityList.filter(item => item.name != _city.name);
-                },
-                meteo: function (_city) {
-                    // A compléter dans la suite du TP 
-                    this.cityWeatherLoading = true;
+                // appel AJAX avec fetch
+                fetch('https://api.openweathermap.org/data/2.5/weather?q=' + _city.name + '&units=metric&lang=fr&apikey=a02d32f5fadec22653571ded0dcb343f')
+                    .then(function (response) {
+                        return response.json();
+                    })
+                    .then(function (json) {
+                        app.cityWeatherLoading = false;
 
-                    // appel AJAX avec fetch
-                    fetch('https://api.openweathermap.org/data/2.5/weather?q=' + _city.name + '&units=metric&lang=fr&apikey=VOTRE_APIKEY')
-                        .then(function (response) {
-                            return response.json();
-                        })
-                        .then(function (json) {
-                            app.cityWeatherLoading = false;
+                        // test du code retour
+                        // 200 = OK
+                        // 404 = city not found 
+                        if (json.cod === 200) {
+                            // on met la r�ponse du webservice dans la variable cityWeather
+                            app.cityWeather = json;
+                            app.message = null;
+                        } else {
+                            app.cityWeather = null;
+                            app.message = 'M�t�o introuvable pour ' + _city.name
+                                + ' (' + json.message + ')';
+                        }
+                    });
 
-                            // test du code retour
-                            // 200 = OK
-                            // 404 = city not found 
-                            if (json.cod === 200) {
-                                // on met la réponse du webservice dans la variable cityWeather
-                                app.cityWeather = json;
-                                app.message = null;
-                            } else {
-                                app.cityWeather = null;
-                                app.message = 'Météo introuvable pour ' + _city.name
-                                    + ' (' + json.message + ')';
-                            }
-                        });
-                }
             }
-            this.cityList.push({ name: this.formCityName });
-
-            // remise à zero du message affiché sous le formulaire
-            this.messageForm = 'existe déjà';
-
-            // remise à zero du champ de saisie
-            this.formCityName = '';
-            //}
-
         }
-    }
     });
 }
 
