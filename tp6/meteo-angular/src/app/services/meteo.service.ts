@@ -9,7 +9,7 @@ export class MeteoService {
   getMeteo(name: string): Promise<any> {
     console.log('from service', name);
 
-    return fetch('https://api.openweathermap.org/data/2.5/weather/?q=' + name + '&units=metric&lang=fr&appid=VOTRE_CLE_OPENWEATHERMAP')
+    return fetch('https://api.openweathermap.org/data/2.5/weather/?q=' + name + '&units=metric&lang=fr&appid=a02d32f5fadec22653571ded0dcb343f')
       .then(function (response) {
         return response.json();
       })
